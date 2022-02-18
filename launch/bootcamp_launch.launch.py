@@ -13,9 +13,7 @@
 # limitations under the License.
 #
 # Co-developed by Tier IV, Inc. and Apex.AI, Inc.
-"""
-Launch file for vehicle for Autoware bootcamp (Lincoln MKZ @Pennovation).
-"""
+"""Launch file for vehicle for Autoware bootcamp (Lincoln MKZ @Pennovation)."""
 
 import os
 from ament_index_python import get_package_share_directory
