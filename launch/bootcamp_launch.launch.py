@@ -37,6 +37,7 @@ def generate_launch_description():
         name='dataspeed_ford_dbw_node',
         namespace='vehicle',
         package='dbw_ford_can',
-        parameters=[get_param_file('bootcamp_launch', 'dbw_params.yaml')])
+        parameters=[get_param_file('bootcamp_launch', 'dbw_params.yaml')],
+        output='screen')
 
     return LaunchDescription([dataspeed_ford_dbw])
