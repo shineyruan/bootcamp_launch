@@ -22,22 +22,44 @@ from launch_ros.actions import Node
 from launch import LaunchDescription
 
 
-def get_param_file(package_name, file_name):
-    """Pass the given param file as a LaunchConfiguration."""
+def get_shared_file_path(package_name, folder_name, file_name):
+    """Get the full path of the shared file."""
+    return os.path.join(get_package_share_directory(package_name), folder_name,
+                        file_name)
+
+
+def get_shared_file(package_name, folder_name, file_name, arg_name):
+    """Pass the given shared file as a LaunchConfiguration."""
     file_path = os.path.join(get_package_share_directory(package_name),
-                             'config', file_name)
-    return launch.substitutions.LaunchConfiguration('params',
+                             folder_name, file_name)
+    return launch.substitutions.LaunchConfiguration(arg_name,
                                                     default=[file_path])
 
 
 def generate_launch_description():
     """Generate launch description with a single component."""
-    dataspeed_ford_dbw = Node(
-        executable='dbw_node',
-        name='dataspeed_ford_dbw_node',
-        namespace='vehicle',
-        package='dbw_ford_can',
-        parameters=[get_param_file('bootcamp_launch', 'dbw_params.yaml')],
-        output='screen')
+    dataspeed_ford_dbw = Node(executable='dbw_node',
+                              name='dataspeed_ford_dbw_node',
+                              namespace='vehicle',
+                              package='dbw_ford_can',
+                              parameters=[
+                                  get_shared_file('bootcamp_launch', 'config',
+                                                  'dbw_params.yaml', 'params')
+                              ],
+                              output='screen')
 
-    return LaunchDescription([dataspeed_ford_dbw])
+    with open(
+            get_shared_file_path('bootcamp_launch', 'urdf',
+                                 'lincoln_mkz_17.urdf'), 'r') as infp:
+        urdf_file = infp.read()
+
+    urdf_publisher = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher',
+        parameters=[{
+            'robot_description': urdf_file
+        }],
+    )
+
+    return LaunchDescription([dataspeed_ford_dbw, urdf_publisher])
