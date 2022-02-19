@@ -38,12 +38,12 @@
       rpy="0 0 0"/>
   </joint>
 
-  <link name="lidar"/>
+  <link name="laser_data_frame"/>
 
   <joint name="lidar_joint"
     type="fixed">
     <parent link="base_link"/>
-    <child link="lidar"/>
+    <child link="laser_data_frame"/>
     <origin xyz="1.498 -0.022 1.49"
       rpy="0 0 0"/>
   </joint>

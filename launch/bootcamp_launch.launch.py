@@ -20,6 +20,8 @@ from ament_index_python import get_package_share_directory
 import launch.substitutions
 from launch_ros.actions import Node
 from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def get_shared_file_path(package_name, folder_name, file_name):
@@ -62,4 +64,16 @@ def generate_launch_description():
         }],
     )
 
-    return LaunchDescription([dataspeed_ford_dbw, urdf_publisher])
+    ouster_launch = IncludeLaunchDescription(PythonLaunchDescriptionSource([
+        get_package_share_directory('ros2_ouster'), '/launch/driver_launch.py'
+    ]),
+                                             launch_arguments={
+                                                 'params_file':
+                                                 get_shared_file_path(
+                                                     'bootcamp_launch',
+                                                     'config',
+                                                     'ouster_config.yaml')
+                                             }.items())
+
+    return LaunchDescription(
+        [dataspeed_ford_dbw, urdf_publisher, ouster_launch])
