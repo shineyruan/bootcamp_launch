@@ -76,35 +76,68 @@ def generate_launch_description():
                                                      'ouster_config.yaml')
                                              }.items())
 
-    # Launch Point type converter node
-    point_type_adapter = Node(package='point_type_adapter',
-                              executable='point_type_adapter_node_exe',
-                              name='point_type_adapter_node',
-                              namespace='',
-                              output='screen',
-                              remappings=[("/points_raw", "/points")])
+    # ----------------- NDT Mapping Nodes -----------------
+    # # Launch Point type converter node
+    # point_type_adapter = Node(package='point_type_adapter',
+    #                           executable='point_type_adapter_node_exe',
+    #                           name='point_type_adapter_node',
+    #                           namespace='',
+    #                           output='screen',
+    #                           remappings=[("/points_raw", "/points")])
 
-    # Launch NDT Mapping node
-    ndt_mapper_param_file = os.path.join(
-        get_package_share_directory('bootcamp_launch'),
-        'config/ndt_mapper.param.yaml')
-    ndt_mapper_param = DeclareLaunchArgument(
-        'ndt_param_param_file',
-        default_value=ndt_mapper_param_file,
-        description='Path to config file for ndt mapper')
-    ndt_mapper = Node(
-        package='ndt_mapping_nodes',
-        executable='ndt_mapper_node_exe',
-        name='ndt_mapper_node',
-        namespace='mapper',
-        output='screen',
-        parameters=[
-            launch.substitutions.LaunchConfiguration('ndt_param_param_file')
-        ],
-        remappings=[("points_in", "/points_xyzi"),
-                    ("points_registered", "/points_registered")])
+    # # Launch NDT Mapping node
+    # ndt_mapper_param_file = os.path.join(
+    #     get_package_share_directory('bootcamp_launch'),
+    #     'config/ndt_mapper.param.yaml')
+    # ndt_mapper_param = DeclareLaunchArgument(
+    #     'ndt_param_param_file',
+    #     default_value=ndt_mapper_param_file,
+    #     description='Path to config file for ndt mapper')
+    # ndt_mapper = Node(
+    #     package='ndt_mapping_nodes',
+    #     executable='ndt_mapper_node_exe',
+    #     name='ndt_mapper_node',
+    #     namespace='mapper',
+    #     output='screen',
+    #     parameters=[
+    #         launch.substitutions.LaunchConfiguration('ndt_param_param_file')
+    #     ],
+    #     remappings=[("points_in", "/points_xyzi"),
+    #                 ("points_registered", "/points_registered")])
+    # -----------------------------------------------------
+
+    main_param_dir = launch.substitutions.LaunchConfiguration(
+        'main_param_dir',
+        default=os.path.join(get_package_share_directory('bootcamp_launch'),
+                             'config', 'lidarslam.yaml'))
+
+    mapping = Node(package='scanmatcher',
+                   executable='scanmatcher_node',
+                   parameters=[main_param_dir],
+                   remappings=[('/input_cloud', '/points')],
+                   output='screen')
+
+    tf = Node(package='tf2_ros',
+              executable='static_transform_publisher',
+              arguments=[
+                  '0', '0', '0', '0', '0', '0', '1', 'base_link',
+                  'laser_data_frame'
+              ])
+
+    graphbasedslam = Node(package='graph_based_slam',
+                          executable='graph_based_slam_node',
+                          parameters=[main_param_dir],
+                          output='screen')
 
     return LaunchDescription([
-        dataspeed_ford_dbw, urdf_publisher, ouster_launch, ndt_mapper_param,
-        ndt_mapper, point_type_adapter
+        dataspeed_ford_dbw,
+        urdf_publisher,
+        ouster_launch,
+        DeclareLaunchArgument(
+            'main_param_dir',
+            default_value=main_param_dir,
+            description='Full path to main parameter file to load'),
+        mapping,
+        tf,
+        graphbasedslam,
     ])
