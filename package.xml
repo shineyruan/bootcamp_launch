@@ -16,6 +16,8 @@
   <exec_depend>ros2_ouster</exec_depend>
   <exec_depend>lidarslam</exec_depend>
   <exec_depend>point_type_adapter</exec_depend>
+  <exec_depend>lanelet2_map_provider</exec_depend>
+  <exec_depend>ndt_nodes</exec_depend>
 
   <!-- provides linting & formatting -->
   <test_depend>ament_lint_auto</test_depend>
