@@ -28,16 +28,15 @@ scan_matcher:
     debug_flag: true
 
 graph_based_slam:
-    ros__parameters:
-      registration_method: "NDT"
-      ndt_resolution: 1.0
-      ndt_num_threads: 2
-      voxel_leaf_size: 0.1
-      loop_detection_period: 3000
-      threshold_loop_closure_score: 0.7
-      distance_loop_closure: 100.0
-      range_of_searching_loop_closure: 20.0
-      search_submap_num: 2
-      num_adjacent_pose_cnstraints: 5
-      use_save_map_in_loop: true
-
+  ros__parameters:
+    registration_method: "NDT"
+    ndt_resolution: 1.0
+    ndt_num_threads: 2
+    voxel_leaf_size: 0.1
+    loop_detection_period: 3000
+    threshold_loop_closure_score: 0.7
+    distance_loop_closure: 100.0
+    range_of_searching_loop_closure: 20.0
+    search_submap_num: 2
+    num_adjacent_pose_cnstraints: 5
+    use_save_map_in_loop: true

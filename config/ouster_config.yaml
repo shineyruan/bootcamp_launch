@@ -1,7 +1,7 @@
 ouster_driver:
   ros__parameters:
-    lidar_ip: 192.0.2.100         
-    computer_ip: 192.0.2.50    
+    lidar_ip: 192.0.2.100
+    computer_ip: 192.0.2.50
     lidar_mode: "1024x10"
     imu_port: 7503
     lidar_port: 7502

@@ -1,10 +1,8 @@
 # params/map_publisher.param.yaml
----
-
 /**:
   ros__parameters:
-    map_pcd_file: "/home/shumin/Documents/AV\ bus/pcd\ maps/pennovation_outside/map.pcd"
-    map_yaml_file: "/home/shumin/Documents/AV\ bus/pcd\ maps/pennovation_outside/map.yaml"
+    map_pcd_file: "/mnt/ssd1/repos/autoware-project/AutowareAuto-dataspeed/src/external/bootcamp/bootcamp_launch/data/Pennovation.pcd"
+    map_yaml_file: "/mnt/ssd1/repos/autoware-project/AutowareAuto-dataspeed/src/external/bootcamp/bootcamp_launch/data/Pennovation.yaml"
     map_frame: "map"
     map_config:
       capacity: 7000000
