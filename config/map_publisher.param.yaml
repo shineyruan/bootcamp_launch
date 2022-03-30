@@ -1,21 +1,21 @@
 # params/map_publisher.param.yaml
 /**:
   ros__parameters:
-    map_pcd_file: "/home/shumin/Documents/AV_bus/pcd_maps/pennovation_inside/map.pcd"
-    map_yaml_file: "/home/shumin/Documents/AV_bus/pcd_maps/pennovation_inside/map.yaml"
+    map_pcd_file: "/home/shumin/Documents/AV_bus/pcd_maps/pennovation_outside/map.pcd"
+    map_yaml_file: "/home/shumin/Documents/AV_bus/pcd_maps/pennovation_outside/map.yaml"
     map_frame: "map"
     map_config:
       capacity: 7000000
       min_point:
-        x: -130.0
-        y: -130.0
-        z: -10.0
+        x: -200.0
+        y: -300.0
+        z: -40.0
       max_point:
-        x: 130.0
-        y: 130.0
-        z: 10.0
+        x: 300.0
+        y: 200.0
+        z: 15.0
       voxel_size:
         x: 2.0
         y: 2.0
-        z: 2.0
+        z: 0.02
     viz_map: True
