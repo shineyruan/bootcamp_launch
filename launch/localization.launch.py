@@ -20,6 +20,7 @@ from ament_index_python import get_package_share_directory
 import launch.substitutions
 from launch_ros.actions import Node
 from launch import LaunchDescription
+from launch.conditions import IfCondition
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
@@ -154,6 +155,29 @@ def generate_launch_description():
                          ])
     # -----------------------------------------------------
 
+    # --------------- Launch RViz2 ------------------------
+    rviz_cfg_path = os.path.join(
+        get_package_share_directory('bootcamp_launch'),
+        'rviz/localization.rviz')
+    with_rviz_param = DeclareLaunchArgument(
+        'with_rviz',
+        default_value='True',
+        description='Launch RVIZ2 in addition to other nodes')
+    rviz_cfg_path_param = DeclareLaunchArgument(
+        'rviz_cfg_path_param',
+        default_value=rviz_cfg_path,
+        description='Launch RVIZ2 with the specified config file')
+    rviz2 = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        arguments=[
+            '-d',
+            launch.substitutions.LaunchConfiguration("rviz_cfg_path_param")
+        ],
+        condition=IfCondition(
+            launch.substitutions.LaunchConfiguration('with_rviz')))
+
     return LaunchDescription([
         # dataspeed_ford_dbw,
         # ouster_launch,
@@ -165,6 +189,9 @@ def generate_launch_description():
         lanelet2_map_provider_param,
         lanelet2_map_provider,
         lanelet2_map_visualizer,
+        with_rviz_param,
+        rviz_cfg_path_param,
+        rviz2,
         # ndt_localizer_param,
         # ndt_localizer,
     ])
