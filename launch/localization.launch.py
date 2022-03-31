@@ -110,10 +110,15 @@ def generate_launch_description():
                                      launch.substitutions.LaunchConfiguration(
                                          'lanelet2_map_provider_param_file')
                                  ])
-    lanelet2_map_visualizer = Node(package='lanelet2_map_provider',
-                                   executable='lanelet2_map_visualizer_exe',
-                                   name='lanelet2_map_visualizer_node',
-                                   namespace='had_maps')
+    lanelet2_map_visualizer = Node(
+        package='lanelet2_map_provider',
+        executable='lanelet2_map_visualizer_exe',
+        name='lanelet2_map_visualizer_node',
+        namespace='had_maps',
+        parameters=[
+            launch.substitutions.LaunchConfiguration(
+                'lanelet2_map_provider_param_file')
+        ])
 
     # Launch point cloud map
     map_publisher_param_file = os.path.join(
