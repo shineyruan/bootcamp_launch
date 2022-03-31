@@ -16,6 +16,7 @@
   <exec_depend>ros2_ouster</exec_depend>
   <exec_depend>lidarslam</exec_depend>
   <exec_depend>point_type_adapter</exec_depend>
+  <exec_depend>point_cloud_filter_transform_nodes</exec_depend>
   <exec_depend>lanelet2_map_provider</exec_depend>
   <exec_depend>ndt_nodes</exec_depend>
 
