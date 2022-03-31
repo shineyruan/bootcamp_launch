@@ -16,8 +16,17 @@
   <exec_depend>ros2_ouster</exec_depend>
   <exec_depend>lidarslam</exec_depend>
   <exec_depend>point_type_adapter</exec_depend>
+  <exec_depend>point_cloud_filter_transform_nodes</exec_depend>
   <exec_depend>lanelet2_map_provider</exec_depend>
   <exec_depend>ndt_nodes</exec_depend>
+
+  <exec_depend>behavior_planner_nodes</exec_depend>
+  <exec_depend>lanelet2_global_planner_nodes</exec_depend>
+  <exec_depend>lane_planner_nodes</exec_depend>
+  <exec_depend>mpc_controller_nodes</exec_depend>
+  <exec_depend>object_collision_estimator_nodes</exec_depend>
+  <exec_depend>costmap_generator_nodes</exec_depend>
+  <exec_depend>freespace_planner_nodes</exec_depend>
 
   <!-- provides linting & formatting -->
   <test_depend>ament_lint_auto</test_depend>

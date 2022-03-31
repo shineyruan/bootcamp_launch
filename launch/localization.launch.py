@@ -92,6 +92,26 @@ def generate_launch_description():
                               namespace='',
                               output='screen',
                               remappings=[("/points_raw", "/points")])
+    # Launch Point cloud filter transformer
+    filter_transformer_param_file = os.path.join(
+        get_package_share_directory('bootcamp_launch'),
+        'config/ouster_filter_transformer.param.yaml')
+    filter_transformer_param = DeclareLaunchArgument(
+        'filter_transformer_param_file',
+        default_value=filter_transformer_param_file,
+        description='Path to parameter file for Point Cloud Filter Transformer'
+    )
+    filter_transformer = Node(
+        package='point_cloud_filter_transform_nodes',
+        executable='point_cloud_filter_transform_node_exe',
+        name='point_cloud_filter_transform_node',
+        namespace='',
+        output='screen',
+        parameters=[
+            launch.substitutions.LaunchConfiguration(
+                'filter_transformer_param_file')
+        ],
+        remappings=[('/points_in', '/points_xyzi')])
 
     # ----------------- Mapping ---------------------
     # Launch Lanlet2 map
@@ -110,10 +130,15 @@ def generate_launch_description():
                                      launch.substitutions.LaunchConfiguration(
                                          'lanelet2_map_provider_param_file')
                                  ])
-    lanelet2_map_visualizer = Node(package='lanelet2_map_provider',
-                                   executable='lanelet2_map_visualizer_exe',
-                                   name='lanelet2_map_visualizer_node',
-                                   namespace='had_maps')
+    lanelet2_map_visualizer = Node(
+        package='lanelet2_map_provider',
+        executable='lanelet2_map_visualizer_exe',
+        name='lanelet2_map_visualizer_node',
+        namespace='had_maps',
+        parameters=[
+            launch.substitutions.LaunchConfiguration(
+                'lanelet2_map_provider_param_file')
+        ])
 
     # Launch point cloud map
     map_publisher_param_file = os.path.join(
@@ -149,7 +174,7 @@ def generate_launch_description():
                                  'ndt_localizer_param_file')
                          ],
                          remappings=[
-                             ("points_in", "/lidars/points_fused_downsampled"),
+                             ("points_in", "/points_filtered"),
                              ("observation_republish",
                               "/lidars/points_fused_viz"),
                          ])
@@ -181,9 +206,11 @@ def generate_launch_description():
     return LaunchDescription([
         # dataspeed_ford_dbw,
         # ouster_launch,
-        # point_type_adapter,
+        point_type_adapter,
         urdf_publisher,
         tf,
+        filter_transformer_param,
+        filter_transformer,
         map_publisher_param,
         map_publisher,
         lanelet2_map_provider_param,
@@ -192,6 +219,6 @@ def generate_launch_description():
         with_rviz_param,
         rviz_cfg_path_param,
         rviz2,
-        # ndt_localizer_param,
-        # ndt_localizer,
+        ndt_localizer_param,
+        ndt_localizer,
     ])
