@@ -57,4 +57,15 @@
     <origin xyz="1.75 0 1.25"
       rpy="-1.571 0 -1.571"/>
   </joint>
+
+  <!-- Autoware Auto has /odom same as /map -->
+  <link name="odom"/>
+
+  <joint name="odom_joint"
+    type="fixed">
+    <parent link="base_link"/>
+    <child link="odom"/>
+    <origin xyz="0.0 0.0 0.0"
+      rpy="-0.0 0.0 0.0"/>
+  </joint>
 </robot>
