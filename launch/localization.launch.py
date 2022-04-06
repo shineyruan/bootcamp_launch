@@ -160,18 +160,20 @@ def generate_launch_description():
     # ----------------- NDT Localizer -----------------
     scan_downsampler_param_file_path = os.path.join(
         get_package_share_directory('bootcamp_launch'),
-        'config/scan_downsampler.param.yaml'
-    )
-    scan_downsampler = Node(
-            package='voxel_grid_nodes',
-            executable='voxel_grid_node_exe',
-            namespace='lidars',
-            name='voxel_grid_cloud_node',
-            parameters=[scan_downsampler_param_file_path],
-            remappings=[
-                ("points_in", "points_filtered"),
-            ]
-        ),
+        'config/scan_downsampler.param.yaml')
+    scan_downsampler_param = DeclareLaunchArgument(
+        'scan_downsampler_param_file_path',
+        default_value=scan_downsampler_param_file_path,
+        description='Path to config file for scan downsampler')
+    scan_downsampler = Node(package='voxel_grid_nodes',
+                            executable='voxel_grid_node_exe',
+                            namespace='lidars',
+                            name='voxel_grid_cloud_node',
+                            parameters=[
+                                launch.substitutions.LaunchConfiguration(
+                                    'scan_downsampler_param_file_path')
+                            ],
+                            remappings=[("points_in", "points_filtered")])
     ndt_localizer_param_file = os.path.join(
         get_package_share_directory('bootcamp_launch'),
         'config/ndt_localizer.param.yaml')
@@ -187,10 +189,9 @@ def generate_launch_description():
                              launch.substitutions.LaunchConfiguration(
                                  'ndt_localizer_param_file')
                          ],
-                         remappings=[
-                             ("points_in", "/points_downsampled"),
-                             ("observation_republish", "/viz_points_downsampled"),
-                         ])
+                         remappings=[("points_in", "/points_downsampled"),
+                                     ("observation_republish",
+                                      "/viz_points_downsampled")])
     # -----------------------------------------------------
 
     # --------------- Launch RViz2 ------------------------
@@ -232,6 +233,7 @@ def generate_launch_description():
         with_rviz_param,
         rviz_cfg_path_param,
         rviz2,
+        scan_downsampler_param,
         scan_downsampler,
         ndt_localizer_param,
         ndt_localizer,
