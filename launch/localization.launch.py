@@ -65,13 +65,6 @@ def generate_launch_description():
         }],
     )
 
-    tf = Node(package='tf2_ros',
-              executable='static_transform_publisher',
-              arguments=[
-                  '0', '0', '0', '0', '0', '0', '1', 'base_link',
-                  'laser_data_frame'
-              ])
-
     # -------------------------------------------------------
     # Launch Ouster Lidar
     ouster_launch = IncludeLaunchDescription(PythonLaunchDescriptionSource([
@@ -189,7 +182,8 @@ def generate_launch_description():
                              launch.substitutions.LaunchConfiguration(
                                  'ndt_localizer_param_file')
                          ],
-                         remappings=[("points_in", "/lidars/points_downsampled"),
+                         remappings=[("points_in",
+                                      "/lidars/points_downsampled"),
                                      ("observation_republish",
                                       "/viz_points_downsampled")])
     # -----------------------------------------------------
@@ -222,7 +216,6 @@ def generate_launch_description():
         # ouster_launch,
         point_type_adapter,
         urdf_publisher,
-        tf,
         filter_transformer_param,
         filter_transformer,
         map_publisher_param,
