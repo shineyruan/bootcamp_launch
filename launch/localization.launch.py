@@ -173,7 +173,7 @@ def generate_launch_description():
                                 launch.substitutions.LaunchConfiguration(
                                     'scan_downsampler_param_file_path')
                             ],
-                            remappings=[("points_in", "points_filtered")])
+                            remappings=[("points_in", "/points_filtered")])
     ndt_localizer_param_file = os.path.join(
         get_package_share_directory('bootcamp_launch'),
         'config/ndt_localizer.param.yaml')
@@ -189,7 +189,7 @@ def generate_launch_description():
                              launch.substitutions.LaunchConfiguration(
                                  'ndt_localizer_param_file')
                          ],
-                         remappings=[("points_in", "/points_downsampled"),
+                         remappings=[("points_in", "/lidars/points_downsampled"),
                                      ("observation_republish",
                                       "/viz_points_downsampled")])
     # -----------------------------------------------------
