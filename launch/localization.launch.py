@@ -141,7 +141,7 @@ def generate_launch_description():
 
     # Launch point cloud map
     map_pcd_file = os.path.join(get_package_share_directory('bootcamp_launch'),
-                                'data/Pennovation.pcd')
+                                'data/Pennovation_processed.pcd')
     map_yaml_file = os.path.join(
         get_package_share_directory('bootcamp_launch'),
         'data/Pennovation.yaml')
