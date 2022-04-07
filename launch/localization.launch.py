@@ -41,16 +41,6 @@ def get_shared_file(package_name, folder_name, file_name, arg_name):
 
 def generate_launch_description():
     """Generate launch description with a single component."""
-    dataspeed_ford_dbw = Node(executable='dbw_node',
-                              name='dataspeed_ford_dbw_node',
-                              namespace='vehicle',
-                              package='dbw_ford_can',
-                              parameters=[
-                                  get_shared_file('bootcamp_launch', 'config',
-                                                  'dbw_params.yaml', 'params')
-                              ],
-                              output='screen')
-
     with open(
             get_shared_file_path('bootcamp_launch', 'urdf',
                                  'lincoln_mkz_17.urdf'), 'r') as infp:
@@ -230,7 +220,6 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        # dataspeed_ford_dbw,
         # ouster_launch,
         point_type_adapter,
         urdf_publisher,
