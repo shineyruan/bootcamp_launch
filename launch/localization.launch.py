@@ -108,6 +108,8 @@ def generate_launch_description():
 
     # ----------------- Mapping ---------------------
     # Launch Lanlet2 map
+    map_osm_file = os.path.join(get_package_share_directory('bootcamp_launch'),
+                                'data/Pennovation.osm')
     lanelet2_map_provider_param_file = os.path.join(
         get_package_share_directory('bootcamp_launch'),
         'config/lanelet2_map_provider.param.yaml')
@@ -121,7 +123,9 @@ def generate_launch_description():
                                  name='lanelet2_map_provider_node',
                                  parameters=[
                                      launch.substitutions.LaunchConfiguration(
-                                         'lanelet2_map_provider_param_file')
+                                         'lanelet2_map_provider_param_file'), {
+                                             'map_osm_file': map_osm_file
+                                         }
                                  ])
     lanelet2_map_visualizer = Node(
         package='lanelet2_map_provider',
@@ -130,10 +134,17 @@ def generate_launch_description():
         namespace='had_maps',
         parameters=[
             launch.substitutions.LaunchConfiguration(
-                'lanelet2_map_provider_param_file')
+                'lanelet2_map_provider_param_file'), {
+                    'map_osm_file': map_osm_file
+                }
         ])
 
     # Launch point cloud map
+    map_pcd_file = os.path.join(get_package_share_directory('bootcamp_launch'),
+                                'data/Pennovation.pcd')
+    map_yaml_file = os.path.join(
+        get_package_share_directory('bootcamp_launch'),
+        'data/Pennovation.yaml')
     map_publisher_param_file = os.path.join(
         get_package_share_directory('bootcamp_launch'),
         'config/map_publisher.param.yaml')
@@ -146,7 +157,10 @@ def generate_launch_description():
                          namespace='localization',
                          parameters=[
                              launch.substitutions.LaunchConfiguration(
-                                 'map_publisher_param_file')
+                                 'map_publisher_param_file'), {
+                                     'map_pcd_file': map_pcd_file,
+                                     'map_yaml_file': map_yaml_file
+                                 }
                          ])
     # --------------------------------------------------
 
@@ -166,7 +180,8 @@ def generate_launch_description():
                                 launch.substitutions.LaunchConfiguration(
                                     'scan_downsampler_param_file_path')
                             ],
-                            remappings=[("points_in", "/ouster/points_filtered")])
+                            remappings=[("points_in",
+                                         "/ouster/points_filtered")])
     ndt_localizer_param_file = os.path.join(
         get_package_share_directory('bootcamp_launch'),
         'config/ndt_localizer.param.yaml')

@@ -2,7 +2,7 @@
 
 /**:
   ros__parameters:
-    map_osm_file: "/home/shumin/AutowareAuto/src/external/bootcamp/bootcamp_launch/data/Pennovation.osm"
+    # map_osm_file: "/mnt/ssd1/repos/autoware-project/AutowareAuto-dataspeed/src/external/bootcamp/bootcamp_launch/data/Pennovation.osm"
     # The earth-map transform is given by the point cloud map, but when the osm file is projected
     # into the map frame, they might not match exactly. These parameters allow specifying a small
     # correction to the position of the map frame origin for the purpose of this projection.
