@@ -82,9 +82,9 @@ def generate_launch_description():
     point_type_adapter = Node(package='point_type_adapter',
                               executable='point_type_adapter_node_exe',
                               name='point_type_adapter_node',
-                              namespace='',
+                              namespace='ouster',
                               output='screen',
-                              remappings=[("/points_raw", "/points")])
+                              remappings=[("points_raw", "/points")])
     # Launch Point cloud filter transformer
     filter_transformer_param_file = os.path.join(
         get_package_share_directory('bootcamp_launch'),
@@ -98,13 +98,13 @@ def generate_launch_description():
         package='point_cloud_filter_transform_nodes',
         executable='point_cloud_filter_transform_node_exe',
         name='point_cloud_filter_transform_node',
-        namespace='',
+        namespace='ouster',
         output='screen',
         parameters=[
             launch.substitutions.LaunchConfiguration(
                 'filter_transformer_param_file')
         ],
-        remappings=[('/points_in', '/points_xyzi')])
+        remappings=[('points_in', 'points_xyzi')])
 
     # ----------------- Mapping ---------------------
     # Launch Lanlet2 map
@@ -166,7 +166,7 @@ def generate_launch_description():
                                 launch.substitutions.LaunchConfiguration(
                                     'scan_downsampler_param_file_path')
                             ],
-                            remappings=[("points_in", "/points_filtered")])
+                            remappings=[("points_in", "/ouster/points_filtered")])
     ndt_localizer_param_file = os.path.join(
         get_package_share_directory('bootcamp_launch'),
         'config/ndt_localizer.param.yaml')
@@ -185,7 +185,7 @@ def generate_launch_description():
                          remappings=[("points_in",
                                       "/lidars/points_downsampled"),
                                      ("observation_republish",
-                                      "/viz_points_downsampled")])
+                                      "viz_points_downsampled")])
     # -----------------------------------------------------
 
     # --------------- Launch RViz2 ------------------------
@@ -209,7 +209,10 @@ def generate_launch_description():
             launch.substitutions.LaunchConfiguration("rviz_cfg_path_param")
         ],
         condition=IfCondition(
-            launch.substitutions.LaunchConfiguration('with_rviz')))
+            launch.substitutions.LaunchConfiguration('with_rviz')),
+        remappings=[("initialpose", "/localization/initialpose"),
+                    ("goal_pose", "/planning/goal_pose")],
+    )
 
     return LaunchDescription([
         # dataspeed_ford_dbw,
